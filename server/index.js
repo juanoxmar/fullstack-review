@@ -1,5 +1,5 @@
 const express = require('express');
-let app = express();
+const app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
 
@@ -15,9 +15,8 @@ app.get('/repos', function (req, res) {
   // This route should send back the top 25 repos
 });
 
-let port = 1128;
+const port = 1128;
 
 app.listen(port, function() {
   console.log(`listening on port ${port}`);
 });
-
