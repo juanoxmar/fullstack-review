@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/fetcher', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+mongoose.connect(process.env.db || 'mongodb://localhost:27017/fetcher', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true
+});
 
 const repoSchema = new mongoose.Schema({
   repoName: String,
