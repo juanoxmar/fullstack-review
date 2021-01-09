@@ -5,7 +5,7 @@ const getReposByUsername = (username) => {
   const options = {
     headers: {
       'User-Agent': 'request',
-      'Authorization': `token ${process.env.KEY}`
+      'Authorization': `token ${process.env.TOKEN}`
     }
   };
 
