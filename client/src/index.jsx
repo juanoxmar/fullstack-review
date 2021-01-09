@@ -20,7 +20,7 @@ class App extends React.Component {
   }
 
   updateRepos() {
-    return axios.get('http://localhost:1128/repos')
+    return axios.get('/repos')
     .then((response) => {
       this.setState({
         repos: response.data
@@ -32,7 +32,7 @@ class App extends React.Component {
   }
 
   search (term) {
-    axios.post('http://localhost:1128/repos', { username: term })
+    axios.post('/repos', { username: term })
       .then(() => {
         return this.updateRepos();
       })

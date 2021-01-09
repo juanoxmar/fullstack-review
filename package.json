@@ -6,6 +6,7 @@
   "author": "Beth Johnson",
   "main": "index.js",
   "scripts": {
+    "heroku-postbuild": "webpack",
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon server/index.js",
     "start": "node server/index.js"
@@ -26,5 +27,6 @@
     "babel-preset-react": "^6.23.0",
     "nodemon": "^2.0.7",
     "webpack": "^2.2.1"
-  }
+  },
+  "proxy": "http://localhost:1128"
 }
