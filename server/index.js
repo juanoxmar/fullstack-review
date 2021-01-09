@@ -22,8 +22,12 @@ app.post('/repos', function (req, res) {
       });
       return Promise.all(data);
     })
-    .then(() => {
-      res.send('Successful Save');
+    .then((dbRes) => {
+      console.log(dbRes);
+      const updated = dbRes.reduce((a,b) => a + b.nModified, 0);
+      const created = dbRes.reduce((a,b) => 'upserted' in b ? a + 1 : a, 0);
+
+      res.json({ updated, created });
     })
     .catch((err) => {
       console.error(err);

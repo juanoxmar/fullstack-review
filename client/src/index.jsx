@@ -9,7 +9,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      repos: []
+      repos: [],
+      updated: null,
+      created: null,
+      search: false
     };
     this.search = this.search.bind(this);
     this.updateRepos = this.updateRepos.bind(this);
@@ -33,7 +36,12 @@ class App extends React.Component {
 
   search (term) {
     axios.post('/repos', { username: term })
-      .then(() => {
+      .then((response) => {
+        this.setState({
+          updated: response.data.updated,
+          created: response.data.created,
+          search: true,
+        })
         return this.updateRepos();
       })
       .catch((err) => {
@@ -42,11 +50,18 @@ class App extends React.Component {
   }
 
   render () {
-    return (<div>
-      <h1>Github Fetcher</h1>
-      <RepoList repos={this.state.repos}/>
-      <Search onSearch={this.search}/>
-    </div>)
+    let updated = null;
+    if (this.state.search) {
+      updated = `${this.state.created} new repos imported, ${this.state.updated} repos updated`;
+    }
+    return (
+      <div>
+        <h1>Github Fetcher</h1>
+        <RepoList repos={this.state.repos}/>
+        <Search onSearch={this.search}/>
+        {updated}
+      </div>
+    );
   }
 }
 

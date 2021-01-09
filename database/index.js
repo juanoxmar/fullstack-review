@@ -7,11 +7,7 @@ mongoose.connect(process.env.db || 'mongodb://localhost:27017/fetcher', {
 
 const repoSchema = new mongoose.Schema({
   repoName: String,
-  repoUrl: {
-    type: String,
-    unique: true,
-    dropDups: true
-  },
+  repoUrl: String,
   repoStars: String,
   devName: String,
   devUrl: String
@@ -20,8 +16,7 @@ const repoSchema = new mongoose.Schema({
 const Repo = mongoose.model('Repo', repoSchema);
 
 const save = (data) => {
-  const repo = new Repo(data)
-  return repo.save();
+  return Repo.updateOne({ repoUrl: data.repoUrl }, data, { upsert: true });
 }
 
 const get = () => {
