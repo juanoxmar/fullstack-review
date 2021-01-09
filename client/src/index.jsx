@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
+import axios from 'axios';
+
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
 
@@ -11,11 +12,33 @@ class App extends React.Component {
       repos: []
     };
     this.search = this.search.bind(this);
+    this.updateRepos = this.updateRepos.bind(this);
+  }
+
+  componentDidMount() {
+    this.updateRepos();
+  }
+
+  updateRepos() {
+    return axios.get('http://localhost:1128/repos')
+    .then((response) => {
+      this.setState({
+        repos: response.data
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+    })
   }
 
   search (term) {
-    console.log(`${term} was searched`);
-    // TODO
+    axios.post('http://localhost:1128/repos', { username: term })
+      .then(() => {
+        return this.updateRepos();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   render () {

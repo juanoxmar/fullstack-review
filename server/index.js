@@ -1,21 +1,45 @@
 const express = require('express');
+const db = require('../database');
+const helper = require('../helpers/github')
+
 const app = express();
+const port = 1128;
 
 app.use(express.static(__dirname + '/../client/dist'));
+app.use(express.json());
 
 app.post('/repos', function (req, res) {
-  // TODO - your code here!
-  // This route should take the github username provided
-  // and get the repo information from the github API, then
-  // save the repo information in the database
+  helper.getReposByUsername(req.body.username)
+    .then((response) => {
+      const data = response.data.map((repo) => {
+        return db.save({
+          repoName: repo.name,
+          repoUrl: repo.html_url,
+          repoStars: repo.stargazers_count,
+          devName: repo.owner.login,
+          devUrl: repo.owner.html_url
+        })
+      });
+      return Promise.all(data);
+    })
+    .then(() => {
+      res.send('Successful Save');
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
 app.get('/repos', function (req, res) {
-  // TODO - your code here!
-  // This route should send back the top 25 repos
+  db.get()
+    .then((results) => {
+      res.json(results);
+    })
+    .catch((err) => {
+      console.error(err);
+    })
 });
 
-const port = 1128;
 
 app.listen(port, function() {
   console.log(`listening on port ${port}`);
