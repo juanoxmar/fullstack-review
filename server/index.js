@@ -3,7 +3,7 @@ const db = require('../database');
 const helper = require('../helpers/github')
 
 const app = express();
-const port = 1128;
+const PORT = process.env.PORT || 1128;
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(express.json());
@@ -41,6 +41,6 @@ app.get('/repos', function (req, res) {
 });
 
 
-app.listen(port, function() {
-  console.log(`listening on port ${port}`);
+app.listen(PORT, function() {
+  console.log(`listening on port ${PORT}`);
 });
